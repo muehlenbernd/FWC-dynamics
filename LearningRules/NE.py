@@ -16,7 +16,7 @@ class NE:
         if game.type == 'PD':
             self.prob_coop = 0.0
 
-        elif game.type == 'SH':
+        else:
 
             a = game.payoffs[0][0]
             b = game.payoffs[0][1]
@@ -29,6 +29,7 @@ class NE:
             choice = 'C'
         else:
             choice = 'D'
+
 
         return choice
 

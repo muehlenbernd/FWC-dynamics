@@ -1,10 +1,12 @@
 import MyMath as MyMath
+import math
+import numpy as np
 
 class EWA:
 
     ### CONSTRUCTOR ###
 
-    def __init__(self):
+    def __init__(self, softmax = False, lambada = 0.0):
 
         # current probability for cooperation
         self.prob_coop = 0.5
@@ -26,6 +28,9 @@ class EWA:
         self.regret_coop = -1
         self.regret_def = -1
 
+        self.softmax = softmax
+        self.lambada = lambada
+
 
     ### CHOICE FUNCTION ###
 
@@ -33,12 +38,27 @@ class EWA:
 
         # initialize attractions value due to the first game:
         if self.attraction_coop == -1 or self.attraction_def == -1:
-            initial_attraction_values = MyMath.cognitive_hierarchy(game.payoffs, 1.5)
-            self.attraction_coop = initial_attraction_values[0]
-            self.attraction_def = initial_attraction_values[1]
+            #initial_attraction_values = MyMath.cognitive_hierarchy(game.payoffs, 1.5)
+            self.attraction_coop = 0.0#initial_attraction_values[0]
+            self.attraction_def = 0.0#initial_attraction_values[1]
 
-        # compute cooperation probability due to attraction values
-        self.prob_coop = self.attraction_coop / (self.attraction_coop + self.attraction_def)
+            self.prob_coop = 0.5
+
+        elif self.attraction_coop + self.attraction_def == 0:
+
+            self.prob_coop = 0.5
+
+        else:
+            # compute cooperation probability due to attraction value
+            if self.softmax:
+                exp_coop = np.exp(self.lambada*self.attraction_coop)
+                exp_def = np.exp(self.lambada*self.attraction_def)
+
+                self.prob_coop = exp_coop / (exp_coop + exp_def)
+
+            else:
+                self.prob_coop = self.attraction_coop / (self.attraction_coop + self.attraction_def)
+
 
         # make a probabilistic choice
         if MyMath.prob_choice(self.prob_coop):

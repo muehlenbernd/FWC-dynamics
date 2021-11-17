@@ -4,3 +4,9 @@ from LearningRules.FP import *
 from LearningRules.FWC import *
 from LearningRules.NE import *
 from LearningRules.RL import *
+from LearningRules.FWC3x3 import *
+from LearningRules.FP3x3 import *
+from LearningRules.RL3x3 import *
+from LearningRules.NE3x3 import *
+from LearningRules.CF3x3 import *
+from LearningRules.EWA3x3 import *
